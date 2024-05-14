@@ -8,6 +8,10 @@ Note: The code is written with python and integrated on MATLAB.
 
 # Integration code of MATLAB is provided.
 
+# Functionalities
+ -> Left click
+ -> Right click
+
 To run the code provided, following the the main requirments to have befor running the code
 
 1) Python (3.11 -> supported by MATLAB versions R2022a-R2024)
