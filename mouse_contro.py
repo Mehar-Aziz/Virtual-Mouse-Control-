@@ -17,9 +17,8 @@ def main():
             print("Failed to read from camera.")
             break
 
-        # Flip the image horizontally for a later selfie-view display, and convert
-        # the BGR image to RGB.
-        image_rgb = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+        # Convert the BGR image to RGB.
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         # Process hand landmarks
         results = hands.process(image_rgb)
