@@ -49,7 +49,7 @@ def main():
         # Display the frame
         cv2.imshow('MediaPipe Hands', image)
 
-        if cv2.waitKey(5) & 0xFF == "q":
+        if cv2.waitKey(5) & 0xFF == 27:
             break
 
     # Release the camera and close all OpenCV windows
