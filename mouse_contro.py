@@ -14,31 +14,45 @@ def main():
     while True:
         success, image = cap.read()
         if not success:
+            print("Failed to read from camera.")
             break
 
         # Flip the image horizontally for a later selfie-view display, and convert
         # the BGR image to RGB.
-        image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+        image_rgb = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
 
-        # To improve performance, optionally mark the image as not writable to
-        # pass by reference.
-        image.flags.writeable = False
-        results = hands.process(image)
+        # Process hand landmarks
+        results = hands.process(image_rgb)
 
         # Draw hand landmarks on the frame
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
-                # Control the virtual mouse
+                # Extract thumb, index finger, and middle finger landmarks
                 thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
                 index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+                middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+
+                # Map landmarks to screen coordinates
                 thumb_x, thumb_y = int(thumb_tip.x * image.shape[1]), int(thumb_tip.y * image.shape[0])
                 index_x, index_y = int(index_tip.x * image.shape[1]), int(index_tip.y * image.shape[0])
+                middle_x, middle_y = int(middle_tip.x * image.shape[1]), int(middle_tip.y * image.shape[0])
+
+                # Print hand landmarks for debugging
+                print(f"Thumb: ({thumb_x}, {thumb_y}), Index: ({index_x}, {index_y}), Middle: ({middle_x}, {middle_y})")
+
+                # Control the mouse cursor
                 pyautogui.moveTo(index_x, index_y)
+
+                # Left click
                 if abs(thumb_x - index_x) < 50 and abs(thumb_y - index_y) < 50:
+                    print("Left click triggered.")
                     pyautogui.click()
+
+                # Right click
+                if abs(thumb_x - index_x) < 50 and abs(thumb_y - index_y) < 50:
+                    if middle_y < index_y:
+                        print("Right click triggered.")
+                        pyautogui.rightClick()
 
                 # Draw hand landmarks on the image
                 mp_drawing.draw_landmarks(
@@ -49,7 +63,9 @@ def main():
         # Display the frame
         cv2.imshow('MediaPipe Hands', image)
 
+        # Check for exit key
         if cv2.waitKey(5) & 0xFF == 27:
+            print("Exiting.")
             break
 
     # Release the camera and close all OpenCV windows
