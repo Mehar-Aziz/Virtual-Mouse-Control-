@@ -23,6 +23,7 @@ Before running the code, ensure you have the following:
 The virtual mouse control supports the following functionalities:
 - Left click
 - Right click
+- Scroll down
 
 ## Setup and Usage
 
@@ -33,8 +34,8 @@ The virtual mouse control supports the following functionalities:
 
 ## Usage Example
 
-1. Run the Python script to initialize the virtual mouse control.
-2. Perform hand gestures to move the cursor and trigger left or right clicks.
+1. Run the Python script to initialize the virtual mouse control (i.e 'python mouse-control.py').
+2. Perform hand gestures to move the cursor and trigger left, right clicks and scroll.
 
 ## Files
 
