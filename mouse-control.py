@@ -9,8 +9,11 @@ def right_click():
     pyautogui.mouseDown(button='right')
     pyautogui.mouseUp(button='right')
 
-def scroll():
-    pyautogui.scroll(10)  # Adjust scrolling speed as needed
+def scrollup():
+    pyautogui.scroll(10)  
+
+def scrolldown():
+    pyautogui.scroll(-10)  
 
 def main():
     # Initialize MediaPipe Hands module
@@ -52,10 +55,14 @@ def main():
                 thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
                 index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
                 middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+                ring_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+                pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
 
                 thumb_x, thumb_y = int(thumb_tip.x * image.shape[1]), int(thumb_tip.y * image.shape[0])
                 index_x, index_y = int(index_tip.x * image.shape[1]), int(index_tip.y * image.shape[0])
                 middle_x, middle_y = int(middle_tip.x * image.shape[1]), int(middle_tip.y * image.shape[0])
+                ring_x, ring_y = int(ring_tip.x * image.shape[1]), int(ring_tip.y * image.shape[0])
+                pinky_x, pinky_y = int(pinky_tip.x * image.shape[1]), int(pinky_tip.y * image.shape[0])
 
                 # Map the frame coordinates to screen coordinates
                 screen_x = int(index_x * screen_width / frame_width)
@@ -74,7 +81,13 @@ def main():
 
                 # Scroll if thumb and index finger are far apart
                 if abs(thumb_x - index_x) > 100:
-                    scroll()
+                    scrollup()
+                # Scroll down if only thumb is up
+                if (abs(thumb_x - index_x) > 50 and abs(thumb_y - index_y) > 50 and
+                abs(thumb_x - middle_x) > 50 and abs(thumb_y - middle_y) > 50 and
+                abs(thumb_x - ring_x) > 50 and abs(thumb_y - ring_y) > 50 and
+                abs(thumb_x - pinky_x) > 50 and abs(thumb_y - pinky_y) > 50):
+                    scrolldown()  
 
                 # Draw hand landmarks on the image
                 mp_drawing.draw_landmarks(
