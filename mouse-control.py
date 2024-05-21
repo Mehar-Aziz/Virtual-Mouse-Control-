@@ -58,11 +58,7 @@ def main():
                 index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
                 middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
                 middle_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
-                ring_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
-                ring_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP]
-                pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
-                pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
-
+        
                 thumb_x, thumb_y = int(thumb_tip.x * image.shape[1]), int(thumb_tip.y * image.shape[0])
                 index_x, index_y = int(index_tip.x * image.shape[1]), int(index_tip.y * image.shape[0])
                 middle_x, middle_y = int(middle_tip.x * image.shape[1]), int(middle_tip.y * image.shape[0])
