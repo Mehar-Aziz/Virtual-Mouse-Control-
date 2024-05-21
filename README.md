@@ -23,6 +23,7 @@ Before running the code, ensure you have the following:
 The virtual mouse control supports the following functionalities:
 - Left click
 - Right click
+- Scroll up
 - Scroll down
 
 ## Setup and Usage
@@ -39,8 +40,8 @@ The virtual mouse control supports the following functionalities:
 
 ## Files
 
-- `python_code.py`: Python script for hand gesture recognition and virtual mouse control.
-- `matlab_integration.m`: MATLAB script for integrating virtual mouse control.
+- `mouse-control.py`: Python script for hand gesture recognition and virtual mouse control.
+- `matlabConnection.m`: MATLAB script for integrating virtual mouse control.
 
 ## Acknowledgements
 
