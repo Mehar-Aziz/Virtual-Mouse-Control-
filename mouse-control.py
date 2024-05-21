@@ -10,10 +10,10 @@ def right_click():
     pyautogui.mouseUp(button='right')
 
 def scrollup():
-    pyautogui.scroll(10)  
+    pyautogui.scroll(10)
 
 def scrolldown():
-    pyautogui.scroll(-10)  
+    pyautogui.scroll(-10)
 
 def main():
     # Initialize MediaPipe Hands module
@@ -53,23 +53,31 @@ def main():
             for hand_landmarks in results.multi_hand_landmarks:
                 # Control the virtual mouse
                 thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+                thumb_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP]
                 index_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+                index_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
                 middle_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+                middle_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
                 ring_tip = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+                ring_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP]
                 pinky_tip = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP]
+                pinky_mcp = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP]
 
                 thumb_x, thumb_y = int(thumb_tip.x * image.shape[1]), int(thumb_tip.y * image.shape[0])
                 index_x, index_y = int(index_tip.x * image.shape[1]), int(index_tip.y * image.shape[0])
                 middle_x, middle_y = int(middle_tip.x * image.shape[1]), int(middle_tip.y * image.shape[0])
-                ring_x, ring_y = int(ring_tip.x * image.shape[1]), int(ring_tip.y * image.shape[0])
-                pinky_x, pinky_y = int(pinky_tip.x * image.shape[1]), int(pinky_tip.y * image.shape[0])
-
+                
                 # Map the frame coordinates to screen coordinates
                 screen_x = int(index_x * screen_width / frame_width)
                 screen_y = int(index_y * screen_height / frame_height)
 
                 # Move the mouse cursor to the mapped coordinates
                 pyautogui.moveTo(screen_x, screen_y)
+
+                # Calculate distances between fingertips and their MCP joints
+                thumb_extended = thumb_tip.y < thumb_mcp.y
+                index_flexed = index_tip.y > index_mcp.y
+                middle_flexed = middle_tip.y > middle_mcp.y
 
                 # Left click if thumb and index finger are close
                 if abs(thumb_x - index_x) < 50 and abs(thumb_y - index_y) < 50:
@@ -79,15 +87,13 @@ def main():
                 if abs(thumb_x - middle_x) < 50 and abs(thumb_y - middle_y) < 50:
                     right_click()
 
-                # Scroll if thumb and index finger are far apart
+                # Scroll up if thumb and index finger are far apart
                 if abs(thumb_x - index_x) > 100:
                     scrollup()
-                # Scroll down if only thumb is up
-                if (abs(thumb_x - index_x) > 50 and abs(thumb_y - index_y) > 50 and
-                abs(thumb_x - middle_x) > 50 and abs(thumb_y - middle_y) > 50 and
-                abs(thumb_x - ring_x) > 50 and abs(thumb_y - ring_y) > 50 and
-                abs(thumb_x - pinky_x) > 50 and abs(thumb_y - pinky_y) > 50):
-                    scrolldown()  
+
+                # Scroll down if only thumb is extended and other fingers are flexed
+                if thumb_extended and index_flexed and middle_flexed:
+                    scrolldown()
 
                 # Draw hand landmarks on the image
                 mp_drawing.draw_landmarks(
