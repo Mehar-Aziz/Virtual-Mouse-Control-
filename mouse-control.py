@@ -6,8 +6,8 @@ def left_click():
     pyautogui.click()
 
 def right_click():
-    pyautogui.mouseDown(button='right')
-    pyautogui.mouseUp(button='right')
+    pyautogui.click(button='right')
+
 
 def scrollup():
     pyautogui.scroll(10)
