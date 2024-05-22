@@ -28,7 +28,7 @@ def main():
     # Get the camera frame resolution
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
+# 
     hands = mp_hands.Hands()
 
     while True:
