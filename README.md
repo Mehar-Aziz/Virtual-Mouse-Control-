@@ -35,7 +35,7 @@ The virtual mouse control supports the following functionalities:
 
 ## Usage Example
 
-1. Run the Python script to initialize the virtual mouse control (i.e 'python mouse-control.py').
+1. Run GUI.mlapp.
 2. Perform hand gestures to move the cursor and trigger left, right clicks and scroll.
 
 ## Files
